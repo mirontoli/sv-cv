@@ -7,12 +7,14 @@ var endpoint = "https://takana14.sharepoint.com/sites/pa/_api/web/lists/getbytit
       function extract() {
         jQuery.getJSON(endpoint)
           .done(function() { 
-            window.tolle = arguments; 
-            var entries = tolle[0].value;
-            var result = "";
+            var entries = arguments[0].value;
+            var results = [];
             for(var i = 0; i < entries.length; i++) { 
-              result += entries[i].Entry + "\n"; 
+              var e = entries[i];
+              results.push({cv:e.cv,sv:e.Title, body: e.Body }); 
             }
-            copy(result);
+            var dictionary = { imported: new Date(), words: results };
+            copy(JSON.stringify(dictionary));
+            //paste into dict.js
         });
       }
