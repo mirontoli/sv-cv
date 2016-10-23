@@ -14,7 +14,7 @@ var WordList = React.createClass({
 });
 
 jQuery.getJSON("dict.json").done(function(data){
-	var WORDS = data.dictionary.words;
+	var WORDS = data.words;
 	ReactDOM.render(<WordList words={WORDS}/>, document.getElementById('root'));
 });
 
