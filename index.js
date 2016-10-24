@@ -1,6 +1,8 @@
 var WordPresentation = React.createClass({
 	render: function() {
-		return <div>{this.props.word.sv} : {this.props.word.cv}</div>;
+		return <div><strong>{this.props.word.sv}</strong> : {this.props.word.cv}
+			<br/><em>{this.props.word.body} </em>
+		</div>;
 	}
 });
 var WordList = React.createClass({
@@ -10,6 +12,28 @@ var WordList = React.createClass({
         	rows.push(<WordPresentation word={word} />);
 	    });
 		return <div>{rows}</div>;
+	}
+});
+var SearchBar = React.createClass({
+	render: function() {
+		return <form style="display:none;">
+        	<input type="text" placeholder="Шыра..." value={this.props.filterText} />
+        </form>;
+	}
+});
+
+var FilterableWordList = React.createClass({
+	render: function() {
+		this.state = this.state || { filterText: '' };
+		return <div>
+	        <SearchBar
+	          filterText={this.state.filterText}
+	        />
+	        <WordList
+	          words={this.props.words}
+	          filterText={this.state.filterText}
+	        />
+	      </div>
 	}
 });
 
