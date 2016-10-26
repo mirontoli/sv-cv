@@ -15,7 +15,8 @@ function extract() {
       }
       var dictionary = { imported: new Date(), words: results };
       var json = JSON.stringify(dictionary);
-      window.prompt("Latest dictionary", json);
+      window.tolle = json;
+      window.prompt("Run copy(tolle) in console to get the latest dictionary");
       //copy(JSON.stringify(dictionary));
       //paste into dict.js
   });

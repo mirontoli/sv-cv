@@ -8,38 +8,87 @@ var WordPresentation = React.createClass({
 var WordList = React.createClass({
 	render: function() {
 		var rows = [];
+		var filterText = this.props.filterText;
 	    this.props.words.forEach(function(word) {
+	    	
+	    	var match = !(ord.sv.indexOf(filterText) === -1);
+	    	if(!match) {
+	    		match = !(ord.cv.indexOf(filterText) === -1)
+	    	}
+	    	if (word.sv.indexOf(filterText) === -1) {
+	    		return;
+	    	}
         	rows.push(<WordPresentation word={word} />);
 	    });
-		return <div>{rows}</div>;
-	}
-});
-var SearchBar = React.createClass({
-	render: function() {
-		return <form style="display:none;">
-        	<input type="text" placeholder="Шыра..." value={this.props.filterText} />
-        </form>;
+		return <div id="wordlist">{rows}</div>;
 	}
 });
 
-var FilterableWordList = React.createClass({
-	render: function() {
-		this.state = this.state || { filterText: '' };
-		return <div>
-	        <SearchBar
-	          filterText={this.state.filterText}
-	        />
-	        <WordList
-	          words={this.props.words}
-	          filterText={this.state.filterText}
-	        />
-	      </div>
-	}
-});
+class SearchBar3 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  
+  handleChange() {
+    this.props.onUserInput(
+      this.refs.filterTextInput.value
+    );
+  }
+  
+  render() {
+    return (
+      <div id="search">
+	      <form>
+	        <input 
+	        	type="text" 
+	    		placeholder="Сӗр (фильтровать ту)..." 
+	          	value={this.props.filterText}
+	          	ref="filterTextInput"
+	          	onChange={this.handleChange}
+	    	/>
+	      </form>
+      </div>
+    );
+  }
+}
+
+class FilterableWordList3 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterText: ''
+    };
+    
+    this.handleUserInput = this.handleUserInput.bind(this);
+  }
+
+  handleUserInput(filterText, inStockOnly) {
+    this.setState({
+      filterText: filterText
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <SearchBar3
+          filterText={this.state.filterText}
+          onUserInput={this.handleUserInput}
+        />
+        <WordList
+          words={this.props.words}
+          filterText={this.state.filterText}
+        />
+      </div>
+    );
+  }
+}
+
 
 jQuery.getJSON("dict.json").done(function(data){
 	var WORDS = data.words;
-	ReactDOM.render(<WordList words={WORDS}/>, document.getElementById('root'));
+	ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
 });
 
 
