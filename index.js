@@ -11,9 +11,9 @@ var WordList = React.createClass({
 		var filterText = this.props.filterText;
 	    this.props.words.forEach(function(word) {
 	    	
-	    	var match = !(ord.sv.indexOf(filterText) === -1);
+	    	var match = !(word.sv.indexOf(filterText) === -1);
 	    	if(!match) {
-	    		match = !(ord.cv.indexOf(filterText) === -1)
+	    		match = !(word.cv.indexOf(filterText) === -1)
 	    	}
 	    	if (word.sv.indexOf(filterText) === -1) {
 	    		return;
