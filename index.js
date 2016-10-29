@@ -1,6 +1,9 @@
 var WordPresentation = React.createClass({
 	render: function() {
-		return <div><strong>{this.props.word.sv}</strong> : {this.props.word.cv}
+		var filterText = this.props.filterText;
+		//var sv = filterText ? this.props.word.sv.replace(filterText, "<mark>" + filterText + "</mark>") : this.props.word.sv;
+		var sv = this.props.word.sv;
+		return <div><strong>{sv}</strong> : {this.props.word.cv}
 			<br/><em>{this.props.word.body} </em>
 		</div>;
 	}
@@ -8,17 +11,18 @@ var WordPresentation = React.createClass({
 var WordList = React.createClass({
 	render: function() {
 		var rows = [];
-		var filterText = this.props.filterText;
+		var filterText = (this.props.filterText || '').toLowerCase();
+
 	    this.props.words.forEach(function(word) {
-	    	
-	    	var match = !(word.sv.indexOf(filterText) === -1);
-	    	if(!match) {
-	    		match = !(word.cv.indexOf(filterText) === -1)
+	    	var match = !filterText  
+	    		|| word.sv.toLowerCase().indexOf(filterText) > -1
+	    		|| word.cv.toLowerCase().indexOf(filterText) > -1
+	    		|| (word.body && word.body.toLowerCase().indexOf(filterText) > -1);
+
+	    	if (match) {
+	    		rows.push(<WordPresentation word={word} filterText={filterText}/>);
 	    	}
-	    	if (word.sv.indexOf(filterText) === -1) {
-	    		return;
-	    	}
-        	rows.push(<WordPresentation word={word} />);
+        	
 	    });
 		return <div id="wordlist">{rows}</div>;
 	}
