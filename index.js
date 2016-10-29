@@ -1,11 +1,30 @@
+var MarkedNode = React.createClass({
+	render: function() {
+		var text = this.props.text;
+		var filterText = this.props.filterText;
+		// if filterText is negative or text is nil, 
+		// then there is nothing to highlight
+		if (!filterText || !text) {
+			return <span>{this.props.text}</span>;
+		}
+		var regex = new RegExp('('+filterText+')', 'ig');
+		var html = text.replace(regex, function(m) { return '<mark>' + m + '</mark>'; })
+		return <span dangerouslySetInnerHTML={{ __html: html }}></span>;
+	}
+});
 var WordPresentation = React.createClass({
 	render: function() {
 		var filterText = this.props.filterText;
 		//var sv = filterText ? this.props.word.sv.replace(filterText, "<mark>" + filterText + "</mark>") : this.props.word.sv;
 		var sv = this.props.word.sv;
-		return <div><strong>{sv}</strong> : {this.props.word.cv}
-			<br/><em>{this.props.word.body} </em>
-		</div>;
+		return <div>
+				<strong>
+					<MarkedNode text={this.props.word.sv} filterText={this.props.filterText}/>
+				</strong> : <MarkedNode text={this.props.word.cv} filterText={this.props.filterText} />
+				<br/>
+				<em><MarkedNode text={this.props.word.body} filterText={this.props.filterText} />
+				</em>
+			</div>;
 	}
 });
 var WordList = React.createClass({
