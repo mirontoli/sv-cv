@@ -14,9 +14,10 @@ function extract() {
         results.push({cv:e.cv,sv:e.Title, body: e.Body }); 
       }
       var dictionary = { imported: new Date(), words: results };
+      console.log('word count', dictionary.words.length);
       var json = JSON.stringify(dictionary);
       window.tolle = json;
-      window.prompt("Run copy(tolle) in console to get the latest dictionary");
+      console.warn("Run copy(tolle) in console to get the latest dictionary");
       //copy(JSON.stringify(dictionary));
       //paste into dict.js
   });
