@@ -1,5 +1,5 @@
 // this is code for importing data from the SharePoint Online list
-var endpoint = "https://takana14.sharepoint.com/sites/pa/_api/web/lists/getbytitle('Swedish')/Items?$select=Title,cv,Body&$orderby=Title&$top=1000000"
+
 
 var cv_tt_endpoint = "https://takana14.sharepoint.com/sites/pa/_api/web/lists/getbytitle('Tatar')/Items?$filter=tisb eq 1&$select=Id,Title,dg2u, tisb&$top=10000"
 
@@ -33,6 +33,7 @@ var jq = document.createElement('script');jq.src = "//ajax.googleapis.com/ajax/l
 
 
 function extract() {
+  var endpoint = "https://takana14.sharepoint.com/sites/pa/_api/web/lists/getbytitle('Swedish')/Items?$select=Title,cv,Body&$orderby=Title&$top=1000000"
   jQuery.getJSON(endpoint)
     .done(function() { 
       var entries = arguments[0].value;

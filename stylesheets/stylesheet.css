@@ -261,3 +261,22 @@ a {
     background-image: linear-gradient(120deg, #155799, #159957);
     margin-bottom: 2rem;
 }
+
+.kiosk .page-header > :not(h1) {
+  display: none;
+}
+.kiosk #search {
+  display:none;
+}
+.kiosk #information {
+  display:none;
+}
+.kiosk footer {
+  display:none;
+}
+.kiosk #wordlist > div {
+  display:none;
+}
+.kiosk #wordlist > div.show {
+  display:block;
+}

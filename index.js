@@ -112,6 +112,38 @@ class FilterableWordList3 extends React.Component {
 jQuery.getJSON("dict.json?v=2016-11-07").done(function(data){
 	var WORDS = data.words;
 	ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
+	showWord();
 });
+
+function kioskifyIfNeeded() {
+	if(location.search.includes("kiosk")) {
+		document.body.className += " kiosk";
+	}
+}
+kioskifyIfNeeded();
+
+
+function showWord() {
+	var wordlist = jQuery("#wordlist");
+	var divs = wordlist.find("> div");
+	var count = divs.length;
+	var div;
+	var timer;
+
+	var moveForward = function() {
+		//remove previous word and clear timeout
+		div && div.removeClass("show");
+		clearTimeout(timer);
+
+		//show new random word
+		var random = Math.floor(Math.random() * count) + 1;
+		div = wordlist.find(":nth-child(" + random + ")");
+		div.addClass("show");
+
+		// set timeout to renew after 10 minutes
+		timer = setTimeout(moveForward, 10000);
+	}
+	moveForward();
+}
 
 
