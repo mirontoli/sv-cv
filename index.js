@@ -122,6 +122,10 @@ function kioskifyIfNeeded() {
 }
 kioskifyIfNeeded();
 
+function getParameterByName(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
 
 function showWord() {
 	var wordlist = jQuery("#wordlist");
@@ -129,6 +133,9 @@ function showWord() {
 	var count = divs.length;
 	var div;
 	var timer;
+	//read interval or use default 600 seconds
+	var interval = parseInt(getParameterByName("interval")) || 600;
+
 
 	var moveForward = function() {
 		//remove previous word and clear timeout
@@ -141,7 +148,7 @@ function showWord() {
 		div.addClass("show");
 
 		// set timeout to renew after 10 minutes
-		timer = setTimeout(moveForward, 10000);
+		timer = setTimeout(moveForward, interval*1000);
 	}
 	moveForward();
 }
