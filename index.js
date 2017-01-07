@@ -115,17 +115,17 @@ jQuery.getJSON("dict.json?v=2016-11-07").done(function(data){
 	showWord();
 });
 
-function kioskifyIfNeeded() {
-	if(location.search.includes("kiosk")) {
-		document.body.className += " kiosk";
-	}
-}
-kioskifyIfNeeded();
-
 function getParameterByName(name) {
     var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
+
+function kioskifyIfNeeded() {
+	if(getParameterByName("kiosk")) {
+		document.body.className += " kiosk";
+	}
+}
+kioskifyIfNeeded();
 
 function showWord() {
 	var wordlist = jQuery("#wordlist");
