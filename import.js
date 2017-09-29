@@ -1,7 +1,7 @@
 // this is code for importing data from the SharePoint Online list
 
 
-var cv_tt_endpoint = "https://takana14.sharepoint.com/sites/pa/_api/web/lists/getbytitle('Tatar')/Items?$filter=tisb eq 1&$select=Id,Title,dg2u, tisb&$top=10000"
+//var cv_tt_endpoint = "https://takana14.sharepoint.com/sites/pa/_api/web/lists/getbytitle('Tatar')/Items?$filter=tisb eq 1&$select=Id,Title,dg2u, tisb&$top=10000"
 
 
 //jQuery.getJSON(cv_tt_endpoint).done(function() { tolle = arguments; })
@@ -26,9 +26,11 @@ var text = JSON.stringify(dictionary)
 copy(text)
 */
 
-
+//
+////ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
 //jquery load
-var jq = document.createElement('script');jq.src = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";document.getElementsByTagName('head')[0].appendChild(jq); setTimeout(function() {jQuery.noConflict(); console.log('jQuery loaded'); extract(); }, 1000);void(0);
+var jq = document.createElement('script');jq.src = 
+"/sites/pa/Style%20Library/jquery-3.2.1.min.js";document.getElementsByTagName('head')[0].appendChild(jq); setTimeout(function() {jQuery.noConflict(); console.log('jQuery loaded'); extract(); }, 1000);void(0);
 
 
 
