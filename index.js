@@ -109,7 +109,7 @@ class FilterableWordList3 extends React.Component {
 }
 
 
-jQuery.getJSON("dict.json?v=2017-09-29").done(function(data){
+jQuery.getJSON("dict.json?v=2018-01-24").done(function(data){
 	var WORDS = data.words;
 	ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
 	showWord();
