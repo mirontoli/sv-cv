@@ -6,7 +6,10 @@ I still think using SharePoint lists is okay as the data source because:
 2. It is flexible. I can add new columns, connect them, enable versioning, I also can invite contributors. 
 3. It has a rich ecosystem: PowerApps, Flow, Azure etc. 
 
-The public website is still a static site: Github Pages. It will remain a static site. 
+The public website is still a static site: Github Pages. It will remain a static site. Pros of Github Pages:
+1. It provides free hosting for a static site.
+2. It is an open repository for people to contribute
+3. It sets up a free Letsencrypt certificate for SSL. 
 
 The aim for sv-cv 3.0 is to automate fetching of words and sentences, so there is no delay because of the need of manual step. 
 
