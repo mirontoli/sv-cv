@@ -1,0 +1,119 @@
+{
+    "$connections": {
+        "value": {
+            "sharepointonline": {
+                "connectionId": "/subscriptions/{subscription-guid}/resourceGroups/sv-chuvash-eu/providers/Microsoft.Web/connections/sharepointonline",
+                "connectionName": "sharepointonline",
+                "id": "/subscriptions/{subscription-guid}/providers/Microsoft.Web/locations/westeurope/managedApis/sharepointonline"
+            }
+        }
+    },
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Villkor": {
+                "actions": {
+                    "Hämta_objekten": {
+                        "inputs": {
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+                                }
+                            },
+                            "method": "get",
+                            "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://takana14.sharepoint.com/sites/pa'))}/tables/@{encodeURIComponent(encodeURIComponent('3635dd26-37f8-4b97-a44b-7cfe9fe20d38'))}/items"
+                        },
+                        "runAfter": {},
+                        "type": "ApiConnection"
+                    },
+                    "Svar": {
+                        "inputs": {
+                            "body": "@body('Hämta_objekten')",
+                            "statusCode": 200
+                        },
+                        "kind": "Http",
+                        "runAfter": {
+                            "Hämta_objekten": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "Response"
+                    }
+                },
+                "else": {
+                    "actions": {
+                        "Skicka_en_HTTP-begäran_till_SharePoint": {
+                            "inputs": {
+                                "body": {
+                                    "headers": {
+                                        "Accept": "application/json;odata=minimalmetadata"
+                                    },
+                                    "method": "GET",
+                                    "uri": "_api/web/Lists/getbytitle('Swedish')/items?$select=Title,cv,Body"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://takana14.sharepoint.com/sites/pa'))}/httprequest"
+                            },
+                            "runAfter": {},
+                            "type": "ApiConnection"
+                        },
+                        "Svar_2": {
+                            "inputs": {
+                                "body": "@body('Skicka_en_HTTP-begäran_till_SharePoint')",
+                                "statusCode": 200
+                            },
+                            "kind": "Http",
+                            "runAfter": {
+                                "Skicka_en_HTTP-begäran_till_SharePoint": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Response"
+                        }
+                    }
+                },
+                "expression": {
+                    "and": [
+                        {
+                            "equals": [
+                                "@triggerBody()?['name']",
+                                "anatoly"
+                            ]
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "If"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    }
+}
