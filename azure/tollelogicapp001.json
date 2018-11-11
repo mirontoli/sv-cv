@@ -2,9 +2,9 @@
     "$connections": {
         "value": {
             "sharepointonline": {
-                "connectionId": "/subscriptions/{subscription-guid}/resourceGroups/sv-chuvash-eu/providers/Microsoft.Web/connections/sharepointonline",
+                "connectionId": "/subscriptions/56439192-522d-477f-bbd4-4e386f31a9ec/resourceGroups/sv-chuvash-eu/providers/Microsoft.Web/connections/sharepointonline",
                 "connectionName": "sharepointonline",
-                "id": "/subscriptions/{subscription-guid}/providers/Microsoft.Web/locations/westeurope/managedApis/sharepointonline"
+                "id": "/subscriptions/56439192-522d-477f-bbd4-4e386f31a9ec/providers/Microsoft.Web/locations/westeurope/managedApis/sharepointonline"
             }
         }
     },
@@ -49,7 +49,7 @@
                                         "Accept": "application/json;odata=minimalmetadata"
                                     },
                                     "method": "GET",
-                                    "uri": "_api/web/Lists/getbytitle('Swedish')/items?$select=Title,cv,Body"
+                                    "uri": "_api/web/Lists/getbytitle('Swedish')/items?$select=Title,cv,Body&$top=10000&$orderby=Title"
                                 },
                                 "host": {
                                     "connection": {
