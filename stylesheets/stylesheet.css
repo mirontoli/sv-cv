@@ -280,3 +280,8 @@ a {
 .kiosk #wordlist > div.show {
   display:block;
 }
+
+.clear-cache {
+  cursor: pointer;
+  background: aquamarine;
+}
