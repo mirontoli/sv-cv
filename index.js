@@ -35,7 +35,7 @@ var WordList = React.createClass({
 	    this.props.words.forEach(function(word) {
 	    	var match = !filterText  
 	    		|| word.sv.toLowerCase().indexOf(filterText) > -1
-	    		|| word.cv.toLowerCase().indexOf(filterText) > -1
+	    		|| (word.cv && word.cv.toLowerCase().indexOf(filterText) > -1)
 	    		|| (word.body && word.body.toLowerCase().indexOf(filterText) > -1);
 
 	    	if (match) {
