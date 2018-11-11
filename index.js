@@ -108,12 +108,29 @@ class FilterableWordList3 extends React.Component {
   }
 }
 
+var tolleCache = localStorage.getItem("words");
+var WORDS = !!tolleCache ? JSON.parse(tolleCache) : undefined;
+if (WORDS) {
+	//no "React" if executed directly, must postpone with setTimeout
+	setTimeout(() => {
+		ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
+		showWord();
+	});
+	
+}
+else {
+	var url = "https://prod-16.westeurope.logic.azure.com:443/workflows/9386aa2a0dbb4593a8ecaaefa227e1a5/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RAfD2U9omt_UbKRrMNOuGva81QnWUIJC9aU7ZsLvLcI";
+	//jQuery.getJSON("dict.json?v=2018-01-24a")
+	jQuery.post( url, { name: "mironov" } )
+	//.done(function(data) {window.tolle = data})
+	.done(function(data){
+		WORDS = data.value.map( v => { return {cv: v.cv, sv: v.Title, body: v.Body }});
+		localStorage.setItem("words", JSON.stringify(WORDS));
+		ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
+		showWord();
+	});
+}
 
-jQuery.getJSON("dict.json?v=2018-01-24a").done(function(data){
-	var WORDS = data.words;
-	ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
-	showWord();
-});
 
 function getParameterByName(name) {
     var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
