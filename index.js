@@ -107,19 +107,26 @@ class FilterableWordList3 extends React.Component {
     );
   }
 }
+function updateDownloadLink(words) {
+	var data = "text/json;charset=utf-8," + 
+	encodeURIComponent(JSON.stringify(words));
+	var href = `data:'${data}`;
+	jQuery("#download-link").attr("href", href);
+}
 function retrieveAndRender() {
 	var url = "https://prod-16.westeurope.logic.azure.com:443/workflows/9386aa2a0dbb4593a8ecaaefa227e1a5/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RAfD2U9omt_UbKRrMNOuGva81QnWUIJC9aU7ZsLvLcI";
 	//jQuery.getJSON("dict.json?v=2018-01-24a")
 	var now = new Date().toISOString();
 	jQuery.post( url, { name: "mironov" } )
 	//.done(function(data) {window.tolle = data})
-	.done(function(data){
+	.then(data => {
 		WORDS = data.value.map( v => { return {cv: v.cv, sv: v.Title, body: v.Body }});
 		localStorage.setItem("words", JSON.stringify(WORDS));
 		localStorage.setItem("words-retrieved-time", now);
 		ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
 		showWord();
-	});
+		updateDownloadLink(WORDS);
+	}, console.error );
 }
 var tolleCache = localStorage.getItem("words");
 var WORDS = !!tolleCache ? JSON.parse(tolleCache) : undefined;
@@ -129,12 +136,13 @@ if (WORDS) {
 	setTimeout(() => {
 		ReactDOM.render(<FilterableWordList3 words={WORDS}/>, document.getElementById('root'));
 		showWord();
+		updateDownloadLink(WORDS);
 	});
 
 	//check if fresh
 	var wordsCacheTime = localStorage.getItem("words-retrieved-time") || "";
 	var lastUpdatedUrl = "https://prod-67.westeurope.logic.azure.com:443/workflows/51d302bc038441bd94d8cf02c8c2e23d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mg-6qu49Lo2Ae-y9Jz9oc46POP8vOLHPuUtLDuc72bE";
-	jQuery.get(lastUpdatedUrl).done(data => {
+	jQuery.get(lastUpdatedUrl).then(data => {
 		var lastUpdatedTime = data;
 		if (lastUpdatedTime > wordsCacheTime) {
 			retrieveAndRender();
