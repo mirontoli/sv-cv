@@ -169,5 +169,17 @@ function showWord() {
 	}
 	moveForward();
 }
+/*
+setTimeout(() => {
+	console.log("loading sentences");
+	var cachedSentencesJson = localStorage.getItem("sentences");
+	
+	jQuery.getJSON("https://prod-40.westeurope.logic.azure.com/workflows/9b5d8935bcc04d3fbb24334a9fd85117/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=YdLrehkFFugs6nGgsuKWU_D_Vzgb3XgYX8Yi-WTjI_E")
+	.done(data => {
 
-
+		window.tolle = data;
+		var sentences = data.d.results;
+		localStorage.setItem("sentences", JSON.stringify(sentences));
+	});
+}, 5000);
+*/
