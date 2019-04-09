@@ -1,0 +1,106 @@
+{
+    "$connections": {
+        "value": {
+            "sharepointonline": {
+                "connectionId": "/subscriptions/56439192-522d-477f-bbd4-4e386f31a9ec/resourceGroups/sv-chuvash-eu/providers/Microsoft.Web/connections/sharepointonline",
+                "connectionName": "sharepointonline",
+                "id": "/subscriptions/56439192-522d-477f-bbd4-4e386f31a9ec/providers/Microsoft.Web/locations/westeurope/managedApis/sharepointonline"
+            }
+        }
+    },
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Parse_JSON": {
+                "description": "Parses the result from SharePoint",
+                "inputs": {
+                    "content": "@body('Send_an_HTTP_request_to_SharePoint')",
+                    "schema": {
+                        "properties": {
+                            "d": {
+                                "properties": {
+                                    "LastItemModifiedDate": {
+                                        "type": "string"
+                                    },
+                                    "__metadata": {
+                                        "properties": {
+                                            "etag": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "uri": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "Send_an_HTTP_request_to_SharePoint": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            },
+            "Response": {
+                "inputs": {
+                    "body": "@body('Parse_JSON')?['d']?['LastItemModifiedDate']",
+                    "statusCode": 200
+                },
+                "kind": "http",
+                "runAfter": {
+                    "Parse_JSON": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Response"
+            },
+            "Send_an_HTTP_request_to_SharePoint": {
+                "inputs": {
+                    "body": {
+                        "method": "GET",
+                        "uri": "_api/web/lists/GetByTitle('Swedish')?$select=LastItemModifiedDate"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://takana14.sharepoint.com/sites/pa'))}/httprequest"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "method": "GET",
+                    "schema": {}
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    }
+}
